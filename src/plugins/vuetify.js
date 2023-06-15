@@ -36,9 +36,16 @@ export default createVuetify({
     //       secondary: '#5CBBF6',
     //     },
     //   },
+    options: {
+      customProperties: true,
+    },
+    fonts: {
+      body: 'Varela Round',
+      heading: 'Varela Round',
+    },
     defaultTheme: 'darkTheme',
     themes: {
-      darkTheme
+      darkTheme,
     },
   },
 })
