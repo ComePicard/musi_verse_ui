@@ -1,7 +1,7 @@
 <template>
 <v-card class="ma-2">
   <v-row justify="space-between">
-    <v-col cols="1" class="d-flex justify-start"><v-img src="@/assets/full_logo_blue.png" height="100"></v-img></v-col>
+    <v-col cols="1" class="d-flex justify-start mt-2"><v-img src="@/assets/full_logo_blue.png" height="100"></v-img></v-col>
     <v-col cols="7" class="d-flex justify-left align-center">
       <v-btn-group>
         <custom-button margin="mx-5" content="Parcourir" :level="3" :icon="null"/>
