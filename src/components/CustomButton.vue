@@ -1,0 +1,91 @@
+<template>
+  <v-hover>
+    <template v-slot:default="{ isHovering, props }">
+      <v-btn
+        v-bind="props"
+        :append-icon="icon"
+        :class="margin + ' ' +  getTextSize + getTextColor"
+        :color="active ? 'secondary' : isHovering && level===1 ? 'secondary' : isHovering && level > 1 ? 'secondary' : 'primary'"
+        :variant="getVariant"
+        :elevation="level !== 3 ? 5 : 0"
+        :size="size"
+      >
+        {{ content }}
+      </v-btn>
+    </template>
+  </v-hover>
+</template>
+
+<script>
+export default {
+  name: "CustomButton",
+
+  props:{
+    content: {
+      type: String,
+      default: "",
+    },
+
+    level:{
+      type: Number,
+      default: 1,
+    },
+
+    icon: {
+      type: String,
+      default: "mdi-arrow-right",
+    },
+
+    active: {
+      type: Boolean,
+      default: false,
+    },
+
+    size:{
+      type: String,
+      default: 'large'
+    },
+
+    margin: {
+      type: String,
+      default: ''
+    }
+  },
+
+  computed:{
+
+    getTextColor(){
+      return this.level === 2 || this.level === 3 ? "text-primary" : null
+    },
+
+    getTextSize(){
+      return this.level === 1 ? "text-body-2 " : "text-h6 "
+    },
+
+    getVariant(){
+      switch (this.level) {
+        case 1 :
+          return 'elevated'
+
+        case 2 :
+          return 'outlined'
+
+        case 3 :
+          return 'text'
+      }
+      return ""
+    },
+
+    getColor(){
+      return this.level === 1 ? 'primary' : null
+    },
+  },
+
+  methods: {
+
+  }
+}
+</script>
+
+<style lang="scss">
+</style>
