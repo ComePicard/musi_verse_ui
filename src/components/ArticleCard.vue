@@ -33,7 +33,9 @@
           </v-col>
         </v-row>
         <v-row justify="end">
-          <v-col cols="5" class="d-flex justify-end">
+          <v-col cols="10" class="d-flex justify-end">
+            <v-chip class="mt-1" prepend-icon="mdi-eye-outline">155</v-chip>
+            <v-chip class="mx-2 mt-1" prepend-icon="mdi-comment-text-outline">22</v-chip>
             <custom-button content="Voir plus" :level="2" margin="mb-2 mr-2"/>
           </v-col>
         </v-row>
