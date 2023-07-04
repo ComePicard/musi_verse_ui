@@ -9,6 +9,7 @@
         :variant="getVariant"
         :elevation="level !== 3 ? 5 : 0"
         :size="size"
+        @click="$emit('action')"
       >
         {{ content }}
       </v-btn>
