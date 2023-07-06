@@ -2,7 +2,7 @@
   <v-hover v-slot="{ isHovering, props }">
     <v-card v-bind="props" width="500" class="mt-5">
       <v-toolbar :color="isHovering ? 'secondary' : 'primary'" class="pl-2">
-        {{ article?.name }}
+        {{ article_data?.name }}
       </v-toolbar>
       <v-row class="pa-2">
         <v-col cols="5">
@@ -20,15 +20,15 @@
           </v-row>
           <v-row>
             <v-col cols="6">
-              <v-chip variant="outlined" color="success" prepend-icon="mdi-chevron-double-up" size="large"
+              <v-chip v-show="getFirstPros!==null" variant="outlined" color="success" prepend-icon="mdi-chevron-double-up" size="large"
                       class="font-weight-bold">
-                Souple
+                {{ getFirstPros }}
               </v-chip>
             </v-col>
             <v-col cols="6">
-              <v-chip variant="outlined" color="error" prepend-icon="mdi-chevron-double-down" size="large"
+              <v-chip v-show="getFirstCons!==null" variant="outlined" color="error" prepend-icon="mdi-chevron-double-down" size="large"
                       class="font-weight-bold">
-                Étouffé
+                {{ getFirstCons }}
               </v-chip>
             </v-col>
           </v-row>
@@ -36,7 +36,7 @@
       </v-row>
       <v-row justify="end">
         <v-col cols="10" class="d-flex justify-end">
-          <v-chip class="mt-1" prepend-icon="mdi-eye-outline">155</v-chip>
+          <v-chip class="mt-1" prepend-icon="mdi-eye-outline">{{ article_data?.views }}</v-chip>
           <v-chip class="mx-2 mt-1" prepend-icon="mdi-comment-text-outline">22</v-chip>
           <custom-button
             content="Voir plus"
@@ -53,6 +53,7 @@
 <script>
 import CustomButton from './CustomButton.vue';
 import {Exception} from "sass";
+import {toRaw} from "vue";
 
 export default {
   name: 'ArticleCard',
@@ -69,16 +70,48 @@ export default {
   data() {
     return {
       article: null,
+      article_data: null,
+      article_attributes: null,
+    }
+  },
+
+  computed: {
+    getFirstPros(){
+      let stock_vote = 0
+      let attribute_to_return = null
+      this.article_attributes?.forEach((attribute) => {
+        let attr = toRaw(attribute)
+        if (attr.article_attribute.attribute_type === "pros") {
+          attribute_to_return = stock_vote < attr.article_votes.votes_diff ? attr.attribute_name : null
+          stock_vote = stock_vote < attr.article_votes.votes_diff ? attr.article_votes.votes_diff : stock_vote
+        }
+      })
+      return attribute_to_return
+    },
+
+    getFirstCons(){
+      let stock_vote = 0
+      let attribute_to_return = null
+      this.article_attributes?.forEach((attribute) => {
+        let attr = toRaw(attribute)
+        if (attr.article_attribute.attribute_type === "cons") {
+          attribute_to_return = stock_vote < attr.article_votes.votes_diff ? attr.attribute_name : null
+          stock_vote = stock_vote < attr.article_votes.votes_diff ? attr.article_votes.votes_diff : stock_vote
+        }
+      })
+      return attribute_to_return
     }
   },
 
   async created(){
-    this.article = await this.getArticle();
+    this.article = await this.getArticle()
+    this.article_data = this.article[0]
+    this.article_attributes = this.article[1]
   },
 
   methods: {
     async getArticle(){
-      const response = await fetch(`http://127.0.0.1:8000/article/${this.path}`, {method: "GET"})
+      const response = await fetch(`http://127.0.0.1:8000/articles/${this.path}`, {method: "GET"})
       try {
         return await response.json()
       }catch (e){

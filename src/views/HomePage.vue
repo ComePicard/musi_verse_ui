@@ -1,7 +1,7 @@
 <template>
   <HeaderNavBar :search="true" />
   <div class="d-flex justify-space-around align-center flex-direction-row mx-auto flex-wrap" style="max-width: 70%; min-height: 70%;">
-    <ArticleCard v-for="article in articles" :path="article.route"/>
+    <ArticleCard v-for="article in articles" :path="article[0].route"/>
   </div>
 </template>
 
