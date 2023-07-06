@@ -1,14 +1,53 @@
 <template>
-  <v-card background="white">
-    {{ article?.name }}
-  </v-card>
+  <HeaderNavBar />
+  <v-row class="mt-2 mx-1">
+    <v-col cols="9">
+      <v-card>
+        <v-card-title class="d-flex flex-row justify-space-between">
+          {{article?.name}}
+          <v-chip-group>
+
+          </v-chip-group>
+        </v-card-title>
+        <v-row class="pa-2">
+          <v-col cols="7">
+            {{article?.descritpion}}
+          </v-col>
+          <v-col colrs="5">
+            <v-row>
+              <v-img src="@/assets/piana_test.jpg" height="250px"></v-img>
+            </v-row>
+            <v-row>
+              Price range : <br/> 15 - 35€
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+    <v-col cols="3">
+      <v-row>
+        <v-col>
+          <v-card>pastèque</v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card>Capibara</v-card>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import {defineComponent} from 'vue'
-
+import HeaderNavBar from "@/components/HeaderNavBar.vue";
 export default defineComponent({
   name: "DetailPage",
+
+  components: {
+    HeaderNavBar,
+  },
 
   data(){
     return {
