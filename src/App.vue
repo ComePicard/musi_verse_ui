@@ -12,6 +12,10 @@
   font-style: normal;
 }
 
+html{
+  overflow-y: hidden;
+}
+
 .app {
   font-family: 'Varela Round', sans-serif;
   /* Autres styles */

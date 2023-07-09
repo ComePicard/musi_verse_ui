@@ -15,8 +15,10 @@ const routes = [
   },
   {
     path: '/article/:path',
-    name: "DetailPage",
-    component: () => import('@/views/DetailPage.vue'),
+    // name: "DetailPage",
+    // component: () => import('@/views/DetailPage.vue'),
+    name: 'HomePage',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/HomePage.vue'),
   },
   {
     path: '/create',

@@ -8,7 +8,7 @@
     </v-col>
     <v-col cols="7" class="d-flex justify-left align-center">
       <v-btn-group>
-        <custom-button margin="mx-5" content="Publier un article" :level="3" icon="mdi-plus"/>
+        <custom-button margin="mx-5" content="Publier un article" :level="3" icon="mdi-plus" @action="to_create()"/>
       </v-btn-group>
     </v-col>
     <v-col cols="4" class="d-flex justify-space-around align-center">
@@ -43,6 +43,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  methods: {
+    to_create(){
+      console.log("to_create")
+      this.$router.push("/create")
+    }
   }
 }
 </script>
