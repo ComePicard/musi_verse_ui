@@ -51,17 +51,20 @@
     <v-col cols="5">
       <v-row>
         <v-col>
-          <v-textarea variant="solo-filled" bg-color="background" label="Rédiger un commentaire..."></v-textarea>
+          <v-textarea variant="solo-filled" bg-color="background" label="Rédiger un commentaire..." v-model="commentaire_content"></v-textarea>
         </v-col>
       </v-row>
       <v-row no-gutters justify="end">
         <v-col cols="3">
-          <custom-button content="Poster"></custom-button>
+          <custom-button content="Poster" @action="postCommentaire()"></custom-button>
         </v-col>
       </v-row>
       <v-row>
-        <v-col>
-          <v-card>Liste des commentaires</v-card>
+        <v-col v-if="!loading_commentaire">
+          <DetailCommentaire v-for="commentaire in commentaires" :commentaire="commentaire"/>
+        </v-col>
+        <v-col v-else>
+          <v-progress-circular indeterminate/>
         </v-col>
       </v-row>
     </v-col>
@@ -73,11 +76,13 @@ import {defineComponent, toRaw} from 'vue'
 import HeaderNavBar from "@/components/HeaderNavBar.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import DetailAttribute from "@/components/DetailAttribute.vue";
+import DetailCommentaire from "@/components/DetailCommentaire.vue";
 
 export default defineComponent({
   name: "DetailPage",
 
   components: {
+    DetailCommentaire,
     DetailAttribute,
     CustomButton,
     HeaderNavBar,
@@ -89,6 +94,9 @@ export default defineComponent({
       article: {},
       article_data: null,
       article_attributes: [],
+      commentaire_content: "",
+      commentaires: [],
+      loading_commentaire: false,
     }
   },
 
@@ -104,9 +112,9 @@ export default defineComponent({
 
   async created() {
     this.article = await this.getArticle()
+    this.commentaires = await this.getCommentaires()
     this.article_data = this.article[0]
     this.article_attributes = toRaw(this.article[1])
-    console.log(this.getPros)
   },
 
   methods: {
@@ -117,6 +125,41 @@ export default defineComponent({
         return await response.json()
       } catch (e) {
         throw new Exception(e)
+      }
+    },
+
+    async getCommentaires() {
+      console.log(this.$route.params)
+      const response = await fetch(`http://127.0.0.1:8000/articles/${this.$route.params.path}/comments/`, {method: "GET"})
+      try {
+        return await response.json()
+      } catch (e) {
+        throw new Exception(e)
+      }
+    },
+
+    async postCommentaire(){
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5ODQ4NDA4LCJpYXQiOjE2ODg5ODQ0MDgsImp0aSI6ImQ1OGI4YWM3MzhmYjQzZDRhZmI2ZjZhMDc2MjU3MjhiIiwidXNlcl9pZCI6Mn0.7oOfuBpNYF4UhpUVQCwpg_ay1gHPYSxB1_SK1DeCKNk");
+
+      var formdata = new FormData();
+      formdata.append("description", this.commentaire_content);
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+      };
+      try {
+        let response = await fetch(`http://127.0.0.1:8000/articles/${this.$route.params.path}/comments/`, requestOptions)
+        this.commentaire_content = ""
+        this.loading_commentaire = true
+        this.commentaires = await this.getCommentaires()
+      } catch(e) {
+        console.error(e)
+      } finally {
+        this.loading_commentaire = false
       }
     }
   }
