@@ -12,8 +12,8 @@
       </v-btn-group>
     </v-col>
     <v-col cols="4" class="d-flex justify-space-around align-center">
-        <custom-button margin="mx-5" content="Se connecter" :level="3" icon="mdi-login-variant"/>
-        <custom-button margin="mx-5" content="S'enregistrer" :level="2" :icon="null"/>
+        <custom-button margin="mx-5" content="Se connecter" :level="3" icon="mdi-login-variant" @action="$router.push('/connection')"/>
+        <custom-button margin="mx-5" content="S'enregistrer" :level="2" :icon="null" @action="$router.push('/connection')"/>
     </v-col>
   </v-row>
   <v-row v-if="search" justify="center" class="mt-0">
@@ -47,7 +47,6 @@ export default {
 
   methods: {
     to_create(){
-      console.log("to_create")
       this.$router.push("/create")
     }
   }

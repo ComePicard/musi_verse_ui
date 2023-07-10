@@ -24,7 +24,12 @@ const routes = [
     path: '/create',
     name: 'CreatePage',
     component: () => import('@/views/CreatePage.vue'),
-  }
+  },
+  {
+    path: '/connection',
+    name: 'ConnectionPage',
+    component: () => import('@/views/ConnectionPage.vue'),
+  },
 ]
 
 const router = createRouter({
