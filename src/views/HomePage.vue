@@ -38,7 +38,7 @@ export default {
   watch: {
     $route (newValue, oldValue){
       this.show_detail = newValue.params.path !== undefined;
-      if(newValue.params.path !== undefined && newValue !== oldValue) this.detail_key++
+      this.detail_key++
     }
   },
 
@@ -67,13 +67,13 @@ export default {
 
 <style lang="scss">
 .homeList{
-  max-width: 70%;
-  max-height: 65%;
+  max-width: 70vw;
+  max-height: 75vh;
   overflow-y: scroll;
 }
 
 .sideList{
-  max-height: 32%;
+  max-height: 75vh;
   overflow-y: scroll;
 }
 
