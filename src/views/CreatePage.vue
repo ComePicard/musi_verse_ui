@@ -140,6 +140,7 @@ export default defineComponent({
     return {
       title: "",
       categories: [
+        "Cordes frappées",
         "Cordes pincées",
         "Cordes frottées",
         "Vents",
@@ -175,7 +176,7 @@ export default defineComponent({
 
     async save(){
       var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5NDkxMzM0LCJpYXQiOjE2ODg2MjczMzQsImp0aSI6IjczMmEyZDVlMDU1MTQyZWViZTBjNDMwN2M5YzYzODg3IiwidXNlcl9pZCI6MX0.1RNpkZa57z3M4xmI8uas0c9H-mRXuoUdtrqBI-smZfI");
+      myHeaders.append("Authorization", "Authorization\", \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5ODQ4NDA4LCJpYXQiOjE2ODg5ODQ0MDgsImp0aSI6ImQ1OGI4YWM3MzhmYjQzZDRhZmI2ZjZhMDc2MjU3MjhiIiwidXNlcl9pZCI6Mn0.7oOfuBpNYF4UhpUVQCwpg_ay1gHPYSxB1_SK1DeCKNk");
 
       var formdata = new FormData();
       formdata.append("name", this.title);
