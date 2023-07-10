@@ -1,7 +1,7 @@
 <template>
   <v-expand-x-transition>
     <v-hover v-slot="{ isHovering, props }">
-      <v-card v-bind="props" width="500" class="mt-5 mx-4">
+      <v-card v-bind="props" width="450" class="mt-5 mx-4">
         <v-toolbar :color="isHovering ? 'secondary' : 'primary'" class="pl-2">
           {{ article_data?.name }}
         </v-toolbar>
@@ -18,16 +18,25 @@
               </v-col>
             </v-row>
             <v-row>
+<!--              TODO: faire des row indépendantes pour lister tous les pros/cons-->
               <v-col cols="6">
-                <v-chip v-show="getFirstPros!==null" variant="outlined" color="success"
-                        prepend-icon="mdi-chevron-double-up" size="large"
+                <v-chip v-show="getFirstPros!==null"
+                        variant="outlined"
+                        color="success"
+                        prepend-icon="mdi-chevron-double-up"
+                        size="large"
+                        :title="getFirstPros"
                         class="font-weight-bold">
                   {{ getFirstPros }}
                 </v-chip>
               </v-col>
               <v-col cols="6">
-                <v-chip v-show="getFirstCons!==null" variant="outlined" color="error"
-                        prepend-icon="mdi-chevron-double-down" size="large"
+                <v-chip v-show="getFirstCons!==null"
+                        variant="outlined"
+                        color="error"
+                        prepend-icon="mdi-chevron-double-down"
+                        size="large"
+                        :title="getFirstCons"
                         class="font-weight-bold">
                   {{ getFirstCons }}
                 </v-chip>
