@@ -93,7 +93,6 @@ export default {
         if (attr.article_attribute.attribute_type === "pros") {
           attribute_to_return = stock_vote <= attr.article_votes.votes_diff ? attr.attribute_name : null
           stock_vote = stock_vote < attr.article_votes.votes_diff ? attr.article_votes.votes_diff : stock_vote
-          console.log(attribute_to_return)
         }
       })
       return attribute_to_return
