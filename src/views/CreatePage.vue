@@ -81,6 +81,7 @@
               v-model="article_pros"
               :items="attributes"
               item-title="content"
+              item-value="id"
               multiple
               label="pros"
               bg-color="background"
@@ -91,10 +92,18 @@
               v-model="article_cons"
               :items="attributes"
               item-title="content"
+              item-value="id"
               multiple
               label="cons"
               bg-color="background"
               variant="solo-filled"></v-select>
+          </v-col>
+        </v-row>
+        <v-row v-if="message_error" justify="center">
+          <v-col cols="10">
+            <v-alert closable class="text-center" color="error">
+              {{ message_error }}
+            </v-alert>
           </v-col>
         </v-row>
         <v-card-actions class="mt-5">
@@ -111,8 +120,8 @@
             <v-col cols="3" class="d-flex justify-end">
               <custom-button
                 :level="2"
-                icon="mdi-content-save"
-                content="Enregister"
+                icon="mdi-send"
+                content="Publier"
                 @action="save()"
               >
               </custom-button>
@@ -127,6 +136,8 @@
 import {defineComponent} from 'vue'
 import HeaderNavBar from "@/components/HeaderNavBar.vue";
 import customButton from "@/components/CustomButton"
+import {postArticle} from "@/services/articles";
+import {getAttributes, linkAttribute} from "@/services/attributes";
 
 export default defineComponent({
   name: "CreatePage",
@@ -152,49 +163,56 @@ export default defineComponent({
       attributes: [],
       article_pros: [],
       article_cons: [],
-      price_range: [150, 250]
+      price_range: [150, 250],
+      message_error: "",
     }
   },
 
-  async created(){
-    this.attributes = await this.getAttributes()
+  async created() {
+    await this.getAttributes()
   },
 
   methods: {
-    async getAttributes(){
-      try{
-        const response = await fetch("http://127.0.0.1:8000/attributes/", {method: "GET"})
-        return await response.json()
-      } catch(e){
-        return console.error(e)
+    async getAttributes() {
+      this.message_error = ""
+      try {
+        this.attributes = await getAttributes()
+      } catch (e) {
+        this.message_error = e.message
       }
     },
 
-    go_back(){
+    go_back() {
       this.$router.back()
     },
 
-    async save(){
-      var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Authorization\", \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5ODQ4NDA4LCJpYXQiOjE2ODg5ODQ0MDgsImp0aSI6ImQ1OGI4YWM3MzhmYjQzZDRhZmI2ZjZhMDc2MjU3MjhiIiwidXNlcl9pZCI6Mn0.7oOfuBpNYF4UhpUVQCwpg_ay1gHPYSxB1_SK1DeCKNk");
-
-      var formdata = new FormData();
-      formdata.append("name", this.title);
-      formdata.append("categories", this.article_categories);
-      formdata.append("description", this.description);
-      formdata.append("price_range", `{${this.price_range}}`);
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: formdata,
-        redirect: 'follow'
-      };
-
-      fetch("http://127.0.0.1:8000/articles/", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+    async save() {
+      this.message_error = ""
+      try {
+        let article = await postArticle({
+          title: this.title,
+          article_categories: this.article_categories,
+          description: this.description,
+          price_range: this.price_range,
+        })
+        for (let attribute of this.article_cons) {
+          await linkAttribute({
+            id_attribute: attribute,
+            id_article: article.id,
+            attribute_type: "cons"
+          })
+        }
+        for (let attribute of this.article_pros) {
+          await linkAttribute({
+            id_attribute: attribute,
+            id_article: article.id,
+            attribute_type: "pros"
+          })
+        }
+        this.$router.push("/")
+      } catch (e) {
+        this.message_error = e.message
+      }
     }
   }
 })
