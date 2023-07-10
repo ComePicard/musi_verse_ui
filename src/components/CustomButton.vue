@@ -9,6 +9,8 @@
         :variant="getVariant"
         :elevation="level !== 3 ? 5 : 0"
         :size="size"
+        :disabled="disabled"
+        @click="$emit('action')"
       >
         {{ content }}
       </v-btn>
@@ -49,6 +51,11 @@ export default {
     margin: {
       type: String,
       default: ''
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
 
