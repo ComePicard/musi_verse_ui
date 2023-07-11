@@ -11,9 +11,13 @@
         <custom-button margin="mx-5" content="Publier un article" :level="3" icon="mdi-plus" @action="to_create()"/>
       </v-btn-group>
     </v-col>
-    <v-col cols="4" class="d-flex justify-space-around align-center">
+    <v-col v-if="!token" cols="4" class="d-flex justify-space-around align-center">
         <custom-button margin="mx-5" content="Se connecter" :level="3" icon="mdi-login-variant" @action="$router.push('/connection')"/>
         <custom-button margin="mx-5" content="S'enregistrer" :level="2" :icon="null" @action="$router.push('/connection')"/>
+    </v-col>
+    <v-col v-else class="d-flex justify-end align-center">
+      <span style="font-size: 20px;">{{ username }}</span>
+      <custom-button margin="mx-5" content="Se déconnecter" :level="2" icon="mdi-logout-variant" @action="deconnection()"/>
     </v-col>
   </v-row>
   <v-row v-if="search" justify="center" class="mt-0">
@@ -45,9 +49,21 @@ export default {
     },
   },
 
+  data(){
+    return{
+      token: JSON.parse(window.localStorage.getItem("token"))?.access,
+      username: JSON.parse(window.localStorage.getItem("user"))?.username,
+    }
+  },
+
   methods: {
     to_create(){
       this.$router.push("/create")
+    },
+
+    deconnection(){
+      this.$router.push('/connection')
+      window.localStorage.clear()
     }
   }
 }
