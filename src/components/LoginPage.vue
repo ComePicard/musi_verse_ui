@@ -70,7 +70,7 @@ export default {
 
         window.localStorage.setItem("token", JSON.stringify(tokens))
         let user = await getCurrentUser()
-        window.localStorage.setItem("user", user)
+        window.localStorage.setItem("user", JSON.stringify(user))
         this.$router.push('/')
       } catch (e) {
         this.message_error = e.message
