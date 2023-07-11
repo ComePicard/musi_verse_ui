@@ -104,7 +104,7 @@ export default {
       this.article_attributes?.forEach((attribute) => {
         let attr = toRaw(attribute)
         if (attr.article_attribute.attribute_type === "cons") {
-          attribute_to_return = stock_vote <= attr.article_votes.votes_diff ? attr.attribute_name : null
+          attribute_to_return = stock_vote <= attr.article_votes.votes_diff ? attr.attribute_name : attribute_to_return
           stock_vote = stock_vote < attr.article_votes.votes_diff ? attr.article_votes.votes_diff : stock_vote
         }
       })
