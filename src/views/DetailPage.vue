@@ -69,6 +69,7 @@
                 <detail-attribute
                   v-for="article in getPros"
                   :attribute="article"
+                  @refresh="loadData()"
                 />
               </v-col>
             </v-row>
@@ -120,6 +121,7 @@
                 <detail-attribute
                   v-for="article in getCons"
                   :attribute="article"
+                  @refresh="loadData()"
                 />
               </v-col>
             </v-row>
@@ -187,17 +189,23 @@ export default defineComponent({
       article: {},
       article_data: null,
       article_attributes: [],
+      list_attributes: [],
+
       commentaire_content: "",
       commentaires: [],
+
       loading_commentaire: false,
       loading_article: false,
+
       commentaire_error: "",
       article_error: "",
-      list_attributes: [],
+
       pros_to_add: null,
       cons_to_add: null,
+
       loading_pros: false,
       loading_cons: false,
+
       show_add_pros: false,
       show_add_cons: false,
     }
@@ -221,6 +229,7 @@ export default defineComponent({
 
   methods: {
     async loadData() {
+      console.log("patate")
       await this.getArticle()
       this.article_data = this.article[0]
       this.article_attributes = toRaw(this.article[1])
