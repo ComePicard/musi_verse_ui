@@ -18,11 +18,11 @@ export const createUser = async function({
     redirect: 'follow'
   };
 
-  const response = fetch("http://127.0.0.1:8000/users/", requestOptions)
+  const response = await fetch("http://127.0.0.1:8000/users/", requestOptions)
   if(response.ok){
     return response.json()
   } else {
-    throw new Error("Erreur lors de la création du compte")
+    throw new Error(`Erreur lors de la création du compte. Code d'erreur : ${response.status}`)
   }
 }
 
@@ -31,8 +31,6 @@ export const getToken = async function({
   username,
   password
 }){
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", `Bearer ${JSON.parse(window.localStorage.getItem("token")).access}`);
 
   var formdata = new FormData();
   formdata.append("username", username);
@@ -40,7 +38,6 @@ export const getToken = async function({
 
   var requestOptions = {
     method: 'POST',
-    headers: myHeaders,
     body: formdata,
     redirect: 'follow'
   };
