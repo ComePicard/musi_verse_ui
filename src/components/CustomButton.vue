@@ -4,11 +4,13 @@
       <v-btn
         v-bind="props"
         :append-icon="icon"
-        :class="margin + ' ' +  getTextSize + getTextColor"
+        :class="'varela-font ' + margin + ' ' +  getTextSize + getTextColor"
         :color="active ? 'secondary' : isHovering && level===1 ? 'secondary' : isHovering && level > 1 ? 'secondary' : 'primary'"
         :variant="getVariant"
         :elevation="level !== 3 ? 5 : 0"
         :size="size"
+        :disabled="disabled"
+        @click="$emit('action')"
       >
         {{ content }}
       </v-btn>
@@ -49,6 +51,11 @@ export default {
     margin: {
       type: String,
       default: ''
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
 
@@ -59,7 +66,7 @@ export default {
     },
 
     getTextSize(){
-      return this.level === 1 ? "text-body-2 " : "text-h6 "
+    return this.level === 1 ? "text-body-1 " : "text-h6 "
     },
 
     getVariant(){
@@ -88,4 +95,14 @@ export default {
 </script>
 
 <style lang="scss">
+@font-face {
+  font-family: 'Varela Round';
+  src: url('~@/assets/VarelaRound-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.varela-font{
+  font-family: 'Varela Round', sans-serif !important;
+}
 </style>
